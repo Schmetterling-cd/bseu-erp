@@ -1,0 +1,36 @@
+@import "bootstrap/dist/css/bootstrap.css";
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import 'vue3-toastify/dist/index.css';
+@import 'vue-loading-overlay/dist/css/index.css';
+
+:root {
+  --main-bseu-color: #1e4b8f;
+  --slider-width: 350px;
+  --border-width-bold: 3px;
+}
+
+.bg-semi-dark {
+    background-color: #343a40;
+}
+
+.h-55-px {
+    height: 55px !important;
+    min-height: 55px !important;
+}
+
+.font-size-0-9-rem {
+    font-size: 0.9rem;
+}
+
+.font-size-0-75-rem {
+    font-size: 0.75rem;
+}
+
+.h-100-vh {
+    height: 100vh;
+}
+
+.border-bseu-bold {
+    border-color: var(--main-bseu-color) !important;
+    border-width: var(--border-width-bold) !important;
+}
