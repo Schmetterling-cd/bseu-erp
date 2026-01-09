@@ -1,7 +1,7 @@
 <template>
     <div class="h-100 bg-dark text-white d-flex flex-column justify-content-between"
         :class="{ 'collapsed': isCollapsed }">
-        <!-- <Logo width="350px" /> -->
+        <Logo width="350px" />
         <DistrictInfo v-if="!props.isCollapsed" />
         <NavigationLayout>
             <Navigation />

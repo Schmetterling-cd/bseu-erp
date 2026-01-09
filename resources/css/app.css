@@ -26,6 +26,14 @@
     font-size: 0.75rem;
 }
 
+.font-size-0-875-rem {
+    font-size: 0.875rem;
+}
+
+.font-size-1-rem {
+    font-size: 1rem!important;
+}
+
 .h-100-vh {
     height: 100vh;
 }
@@ -34,3 +42,54 @@
     border-color: var(--main-bseu-color) !important;
     border-width: var(--border-width-bold) !important;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.background-bseu {
+    background-color: var(--main-bseu-color) !important;
+}
+
+.font-weight-500 {
+    font-weight: 500 !important;
+}
+
+.font-weight-300 {
+    font-weight: 300 !important;
+}
+
+.w-75-px {
+    width: 75px !important;
+}
+
+.bseu-crm-scrollbar {
+    scrollbar-width: none;
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.1);
+}
+
+.bseu-crm-scrollbar::-webkit-scrollbar {
+    width: 3px;
+}
+
+.bseu-crm-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    margin: 3px 0;
+}
+
+.bseu-crm-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    transition: background 0.2s ease;
+}
+
+.bseu-crm-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.translate-y-n1-on-hover:hover {
+    transform: translateY(-1px);
+}
+
+

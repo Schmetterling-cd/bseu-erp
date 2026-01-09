@@ -93,7 +93,7 @@ export default {
         ;
     },
 
-    search(url, config) {
+    async sendGetWithoutBlock(url, config) {
         return axios.get(url, config)
             .then(response => {
                 return this.responseHandler(response);

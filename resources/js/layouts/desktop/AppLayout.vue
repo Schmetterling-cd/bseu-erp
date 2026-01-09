@@ -5,7 +5,7 @@
         <div class="d-flex flex-column flex-grow-1 bg-light overflow-hidden" :class="{ 'expanded': isCollapsed }">
              <TopBar :isCollapsed="isCollapsed" @toggle="toggleSidebar"/>
 
-            <div class="flex-grow-1 overflow-auto p-4">
+            <div class="flex-grow-1 overflow-auto p-4 bseu-crm-scrollbar">
                 <router-view></router-view>
             </div>
         </div>

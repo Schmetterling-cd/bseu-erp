@@ -7,12 +7,20 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 import NavGroup from './NavGroup.vue';
 import NavLink from './NavLink.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
+const route = useRoute();
+
+watch(() => route.path, (newPath) => {
+    const id = getElementIdByPath(newPath, navElements);
+    console.log(id);
+    setActiveItemById(id);
+    disableNotActiveItems(navElements, id);
+});
 
 const navElements = reactive([
     {
@@ -46,6 +54,18 @@ const navElements = reactive([
     },
 ]);
 
+const getElementIdByPath = (path, elements) => {
+    for (const element of elements) {
+        if (isGroupElement(element)) {
+            return getElementIdByPath(path, element.items);
+        } else if (element.link === path) {
+            return element.uuid;
+        }
+    }
+
+    return null;
+};
+
 const isGroupElement = (element) => {
     return element.items && Array.isArray(element.items) && element.items.length > 0;
 };
@@ -56,10 +76,11 @@ const findGroupByItemId = (itemId) => {
     });
 };
 
-const setActiveItem = (itemId) => {
+const setActiveItemById = (itemId) => {
     const group = findGroupByItemId(itemId);
 
     if (group) {
+        group.active = true;
         group.items.find(item => item.uuid === itemId).active = true;
     } else {
         navElements.find(item => item.uuid === itemId).active = true;
@@ -78,32 +99,23 @@ const disableNotActiveItems = (elements, activeItemId) => {
     });
 }
 
+const disableNotActiveGroups = (elements) => {
+    elements.forEach((element) => {
+        if (isGroupElement(element) && !hasActiveItem(element)) {
+            element.active = false;
+        }
+    });
+}
+
 const disableNotActiveItem = (element) => {
     element.active = false;
 }
 
 const handleItemClick = (item) => {
     try {
-        setActiveItem(item.uuid);
+        setActiveItemById(item.uuid);
         disableNotActiveItems(navElements, item.uuid);
-
-        const group = findGroupByItemId(item.uuid);
-
-        navElements.forEach((element) => {
-            if (isGroupElement(element)) {
-                switch (true) {
-                    case group && element.uuid !== group.uuid:
-                        element.active = false;
-                        break;
-                    case group && element.uuid === group.uuid:
-                        element.active = true;
-                        break;
-                    case !group:
-                        element.active = false;
-                        break;
-                }
-            }
-        });
+        disableNotActiveGroups(navElements);
     } finally {
         router.push(item.link);
     }
@@ -134,31 +146,6 @@ const handleGroupToggle = (groupId) => {
 </script>
 
 <style scoped>
-.custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.1);
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-    width: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 2px;
-    margin: 3px 0;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 2px;
-    transition: background 0.2s ease;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.4);
-}
-
 .nav-item {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }

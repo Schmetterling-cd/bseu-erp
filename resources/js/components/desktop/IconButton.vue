@@ -1,8 +1,8 @@
 <template>
-    <div class="d-flex flex-column justify-content-center align-items-center h-100 mx-0 my-0 px-0 py-0 bseu-icon"
+    <button class="d-flex flex-column justify-content-center border align-items-center bg-transparent border-0 h-100 mx-0 my-0 px-0 py-0 bseu-icon"
         :style="{ width: size, height: size }">
         <slot></slot>
-    </div>
+    </button>
 </template>
 
 <script setup>
@@ -25,7 +25,7 @@ const props = defineProps({
     transition: color 0.2s ease;
 }
 
-.bseu-icon:hover :deep(i) {
+.bseu-icon:not(:disabled):hover :deep(i) {
     color: var(--main-bseu-color) !important;
 }
 </style>
