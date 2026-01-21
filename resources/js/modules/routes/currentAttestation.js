@@ -8,5 +8,10 @@ export default [
         path: '/current-attestation/content',
         name: 'currentAttestationContent',
         component: () => import('../../pages/currentAttestation/CurrentAttestationContent.vue'),
+    },
+    {
+        path: '/current-attestation/card/:id',
+        name: 'currentAttestationCard',
+        component: () => import('../../pages/currentAttestation/CurrentAttestationCard.vue'),
     }
 ];

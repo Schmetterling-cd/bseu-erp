@@ -1,6 +1,6 @@
 <template>
     <PageComponentLayout class="px-0 py-0">
-        <PageSubTitle :title="title" :font-size="titleFontSize" />
+        <PageSubTitle :title="title" :font-size="titleFontSize" :icon="icon" />
         <div class="px-3 py-2 w-100">
             <slot></slot>
         </div>
@@ -20,6 +20,10 @@ const props = defineProps({
         type: String,
         required: true
     },
+    icon: {
+        type: String,
+        default: 'bi-journal-text'
+    }
 });
 </script>
 

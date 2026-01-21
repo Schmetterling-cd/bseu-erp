@@ -20,7 +20,7 @@
             <table class="table table-striped table-bordered pb-0 mb-0">
                 <thead>
                     <tr>
-                        <th scope="col" v-for="header in table.headers">
+                        <th scope="col align-middle" v-for="header in table.headers">
                             {{ header.label }}
                             <span class="sort-icon" v-if="header.isSortable && sortField === header.name"
                                 @click="sortBy(header.name)">
@@ -31,7 +31,7 @@
                 </thead>
                 <tbody class="table-group-divider">
                     <tr v-for="row in table.data" :key="row.id">
-                        <td v-for="header in table.headers">
+                        <td v-for="header in table.headers" :class="{ 'align-middle': header.isAction }">
                             <IconButton class="w-100" v-if="header.isAction && hasAction(header.name)"
                                 @click="getActionByName(header.name).action(row.id)">
                                 <i :class="'bi ' + row[header.name]"></i>
@@ -45,7 +45,7 @@
 
             <!-- <Spinner v-if="fetchTable"></Spinner> -->
 
-            <div v-if="table.data.length === 0 && !fetchTable">
+            <div class="d-flex flex-column justify-content-centr align-items-center" v-if="table.data.length === 0 && !fetchTable">
                 <p>{{ searchQuery ? 'Data not found' : 'No records' }}</p>
             </div>
         </div>
@@ -61,6 +61,9 @@ import BseuSelect from "./BseuSelect.vue";
 import PaginationControl from "./PaginationControl.vue";
 import IconButton from "./IconButton.vue";
 import { reactive, ref, onMounted } from "vue";
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const props = defineProps({
     controller: {
@@ -110,46 +113,132 @@ const fetchRecords = () => {
         searchQuery: tableFilters.searchQuery,
     };
 
-    table.headers = [
-        {
-            priority: 1,
-            name: 'open',
-            label: null,
-            isSortable: false,
-            isAction: true
-        },
-        {
-            priority: 2,
-            name: 'group_number',
-            label: 'Номер группы',
-            isSortable: false,
-            isAction: false
-        },
-        {
-            priority: 3,
-            name: 'course',
-            label: 'Курс',
-            isSortable: true,
-            isAction: false
-        },
-        {
-            priority: 4,
-            name: 'is_accomplieshed',
-            label: 'Аттестация окончена',
-            isSortable: false,
-            isAction: false
-        },
-    ];
+    switch (route.path) {
+        case '/current-attestation/index':
+            table.headers = [
+                {
+                    priority: 1,
+                    name: 'open',
+                    label: null,
+                    isSortable: false,
+                    isAction: true
+                },
+                {
+                    priority: 2,
+                    name: 'attestarion_name',
+                    label: 'Наименование',
+                    isSortable: false,
+                    isAction: false
+                },
+                {
+                    priority: 3,
+                    name: 'faculty',
+                    label: 'Факультет',
+                    isSortable: false,
+                    isAction: false
+                },
+                {
+                    priority: 4,
+                    name: 'date_start',
+                    label: 'Дата начала аттестации',
+                    isSortable: true,
+                    isAction: false
+                },
+                {
+                    priority: 5,
+                    name: 'date_end',
+                    label: 'Дата окончания аттестации',
+                    isSortable: true,
+                    isAction: false
+                },
+                {
+                    priority: 6,
+                    name: 'correct_date_start',
+                    label: 'Дата начала исправительного периода',
+                    isSortable: true,
+                    isAction: false
+                },
+                {
+                    priority: 7,
+                    name: 'correct_date_end',
+                    label: 'Дата окончания исправительного периода',
+                    isSortable: true,
+                    isAction: false
+                },
+                {
+                    priority: 8,
+                    name: 'is_accomplieshed',
+                    label: 'Аттестация окончена',
+                    isSortable: false,
+                    isAction: false
+                },
+            ];
 
-    table.data = [
-        {
-            id: 1,
-            open: 'bi-folder',
-            group_number: '25-ДЦИ-2',
-            course: '1',
-            is_accomplieshed: 'Да'
-        }
-    ];
+            table.data = [
+                {
+                    id: 1,
+                    open: 'bi-folder',
+                    attestarion_name: 'Текущая аттестация студентов 2025-2026 г.г. 2 семестр ',
+                    faculty: 'ФЦЭ',
+                    date_start: '01.03.2026',
+                    date_end: '25.03.2026',
+                    correct_date_start: '01.04.2026',
+                    correct_date_end: '14.04.2026',
+                    is_accomplieshed: 'Нет'
+                }
+            ];
+
+            break;
+        case '/current-attestation/content':
+            table.headers = [
+                {
+                    priority: 1,
+                    name: 'open',
+                    label: null,
+                    isSortable: false,
+                    isAction: true
+                },
+                {
+                    priority: 2,
+                    name: 'group_number',
+                    label: 'Номер группы',
+                    isSortable: false,
+                    isAction: false
+                },
+                {
+                    priority: 3,
+                    name: 'course',
+                    label: 'Курс',
+                    isSortable: true,
+                    isAction: false
+                },
+                {
+                    priority: 4,
+                    name: 'subjects',
+                    label: 'Предметы',
+                    isSortable: true,
+                    isAction: false
+                },
+                {
+                    priority: 5,
+                    name: 'is_accomplieshed',
+                    label: 'Аттестация окончена',
+                    isSortable: false,
+                    isAction: false
+                },
+            ];
+            table.data = [
+                {
+                    id: 1,
+                    open: 'bi-folder',
+                    group_number: '25-ДЦИ-2',
+                    course: '1',
+                    subjects: 'Алгоритмизация и программирование, Искусственный интелект, Реинженеринг бизнесс-процессов',
+                    is_accomplieshed: 'Да'
+                }
+            ];
+            break;
+    }
 
     // fetchTable = true;
 

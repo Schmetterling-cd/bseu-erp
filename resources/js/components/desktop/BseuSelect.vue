@@ -1,6 +1,7 @@
 <template>
-    <select :value="value" class="form-select select">
-        <option v-for="option in options" :value="option.value">{{ option.text }}</option>
+    <select :value="modelValue" class="form-select select" @change="handleChange">
+        <option v-for="option in options" :key="option.value" :value="option.value" :selected="option.value === value">
+            {{ option.label }}</option>
     </select>
 </template>
 
@@ -11,21 +12,26 @@ const props = defineProps({
     options: {
         type: Array,
         default: () => [
-            { value: 5, text: '5' },
-            { value: 10, text: '10' },
-            { value: 20, text: '20' },
-            { value: 50, text: '50' },
+            { value: 5, label: '5' },
+            { value: 10, label: '10' },
+            { value: 20, label: '20' },
+            { value: 50, label: '50' },
         ]
     },
-    value: {
-        type: [String, Number],
-        default: null
+    modelValue: {
+        type: [String, Number]
     }
 });
 
+const emit = defineEmits(['update:modelValue']); // ← это должно быть update:modelValue
+
+const handleChange = (event) => {
+    emit('update:modelValue', event.target.value);
+};
+
 onBeforeMount(() => {
     if (!props.value && props.options.length > 0) {
-        itemsPerPage = props.options[0].value;
+        props.value = props.options[0].value;
     }
 });
 </script>

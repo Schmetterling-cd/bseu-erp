@@ -15,9 +15,10 @@ import { useRouter, useRoute } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 
-watch(() => route.path, (newPath) => {
-    const id = getElementIdByPath(newPath, navElements);
-    console.log(id);
+watch(() => router.currentRoute.value, () => {
+    const currentComponent = router.currentRoute.value;
+    const id = getElementIdByPath(currentComponent.matched[currentComponent.matched.length - 1].path, navElements);
+
     setActiveItemById(id);
     disableNotActiveItems(navElements, id);
 });
@@ -27,7 +28,7 @@ const navElements = reactive([
         uuid: 5,
         title: 'Главная',
         icon: 'bi-house-door',
-        active: true,
+        active: false,
         link: '/'
     },
     {
@@ -35,20 +36,22 @@ const navElements = reactive([
         title: 'Текущая аттестация',
         icon: 'bi-journal-text',
         active: false,
+        link: '/current-attestation/index',
+        isGroup: false,
         items: [
-            {
-                uuid: 2,
-                title: 'Журнал аттестации',
-                icon: 'bi-table',
-                active: false,
-                link: '/current-attestation/index'
-            },
             {
                 uuid: 3,
                 title: 'Аттестация',
                 icon: 'bi-table',
                 active: false,
                 link: '/current-attestation/content'
+            },
+            {
+                uuid: 4,
+                title: 'Журнал группы',
+                icon: 'bi-table',
+                active: false,
+                link: '/current-attestation/card/:id'
             }
         ]
     },
@@ -56,10 +59,11 @@ const navElements = reactive([
 
 const getElementIdByPath = (path, elements) => {
     for (const element of elements) {
-        if (isGroupElement(element)) {
-            return getElementIdByPath(path, element.items);
-        } else if (element.link === path) {
-            return element.uuid;
+        switch (true) {
+            case isGroupElement(element) || (hasSubItems(element) && element.link !== path):
+                return getElementIdByPath(path, element.items);
+            case element.link === path:
+                return element.uuid;
         }
     }
 
@@ -67,12 +71,16 @@ const getElementIdByPath = (path, elements) => {
 };
 
 const isGroupElement = (element) => {
+    return element.isGroup && element.items && Array.isArray(element.items) && element.items.length > 0;
+};
+
+const hasSubItems = (element) => {
     return element.items && Array.isArray(element.items) && element.items.length > 0;
 };
 
 const findGroupByItemId = (itemId) => {
     return navElements.find((element) => {
-        return isGroupElement(element) && element.items.some(item => item.uuid === itemId);
+        return (isGroupElement(element) || hasSubItems(element)) && element.items.some(item => item.uuid === itemId);
     });
 };
 
@@ -90,10 +98,21 @@ const setActiveItemById = (itemId) => {
 const disableNotActiveItems = (elements, activeItemId) => {
     elements.forEach((element) => {
         if (element.uuid !== activeItemId) {
-            if (isGroupElement(element)) {
-                disableNotActiveItems(element.items, activeItemId);
-            } else {
-                disableNotActiveItem(element);
+            switch (true) {
+                case isGroupElement(element):
+                    console.log(element, 'group');
+                    disableNotActiveItems(element.items, activeItemId);
+                    break;
+                case hasSubItems(element):
+                    disableNotActiveItems(element.items, activeItemId);
+
+                    if (!hasActiveItem(element)) {
+                        element.active = false;
+                    }
+                    break;
+                case !isGroupElement(element) && !hasSubItems(element):
+                    disableNotActiveItem(element);
+                    break;
             }
         }
     });
@@ -119,11 +138,10 @@ const handleItemClick = (item) => {
     } finally {
         router.push(item.link);
     }
-
 };
 
 const hasActiveItem = (element) => {
-    return element.items.some(item => item.active)
+    return element.items.some(item => item.active);
 };
 
 const handleGroupToggle = (groupId) => {
