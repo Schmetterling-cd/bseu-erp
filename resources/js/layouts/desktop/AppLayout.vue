@@ -6,7 +6,7 @@
              <TopBar :isCollapsed="isCollapsed" @toggle="toggleSidebar"/>
 
             <div class="flex-grow-1 overflow-auto p-4">
-                <router-view></router-view>
+                <slot></slot>
             </div>
         </div>
     </div>

@@ -4,70 +4,61 @@ export default {
     namespaced: true,
 
     state: {
-        isAuthenticated: true,
-        user: {
-            id: 0,
-            name: 'Ivan',
-            email: 'example@example.com',
-            role: 'tutor'
-        },
+        activeItemId: 5,
+        navigation: [
+            {
+                uuid: 5,
+                title: 'Главная',
+                icon: 'bi-house-door',
+                active: true,
+                link: '/'
+            },
+            {
+                uuid: 1,
+                title: 'Текущая аттестация',
+                icon: 'bi-journal-text',
+                active: false,
+                items: [
+                    {
+                        uuid: 2,
+                        title: 'Журнал аттестации',
+                        icon: 'bi-table',
+                        active: false,
+                        link: '/current-attestation/index'
+                    },
+                    {
+                        uuid: 3,
+                        title: 'Аттестация',
+                        icon: 'bi-table',
+                        active: false,
+                        link: '/current-attestation/content'
+                    }
+                ]
+            },
+        ],
     },
 
     getters: {
-        isAuthenticated: (state) => state.isAuthenticated,
-        user: (state) => state.user,
-    },
-
-    mutations: {
-        setAuthenticated(state, isAuthenticated) {
-            state.isAuthenticated = isAuthenticated;
+        getNavigation(state) {
+            return state.navigation;
         },
     },
 
+    mutations: {
+        setNavigation(state, navigation) {
+            state.navigation = navigation;
+        },
+        setActiveItem(state, activeItemId) {
+            state.activeItemId = activeItemId;
+        }
+    },
+
     actions: {
-        // getUser({ commit }) {
-        //     return requester.sendGet('/api/user')
-        //         .then(data => {
-        //             if (data) {
-        //                 commit('setAuthenticated', true);
-        //             }
-        //         })
-        //     ;
-        // },
-
-        // login({ commit }, credentials) {
-        //     return requester.sendGet('/sanctum/csrf-cookie')
-        //         .then(response => {return requester.sendPost('/login', credentials)})
-        //         .then(response => {
-        //             commit('setAuthenticated', true);
-        //             return response;
-        //         })
-        //     ;
-        // },
-
-        // registration({ commit }, credentials) {
-        //     return requester.sendGet('/sanctum/csrf-cookie')
-        //         .then(response => {return requester.sendPost('/register', credentials)})
-        //         .then(data => {
-        //             commit('setAuthenticated', true);
-        //             return data;
-        //         })
-        //     ;
-        // },
-
-        // logout({ commit }) {
-        //     return requester.sendPost('/logout')
-        //         .then(() => {
-        //             commit('setAuthenticated', false);
-        //         })
-        // },
-
-        // forgotPassword({ commit }, data) {
-        //     return requester.sendPost('/forgot-password', data);
-        // },
-
-        // resetPassword({ commit }, data) {
-        //     return requester.sendPost('/reset-password', data);
-        // }
+        setUpNavigation({ state, commit }) {
+            requester.sendPost('')
+                .then(data => {
+                    commit('setNavigation', data);
+                })
+        },
     }
 }

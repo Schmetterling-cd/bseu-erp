@@ -21,7 +21,7 @@
 
 <script setup>
 import { defineProps, defineEmits  } from 'vue';
-import IconButton from './IconButton.vue';
+import IconButton from './buttons/IconButton.vue';
 
 const props = defineProps({
     isCollapsed: {

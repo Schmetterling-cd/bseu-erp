@@ -1,18 +1,16 @@
 <template>
-    <div class="border-bottom border-secondary">
-        <div class="d-flex flex-column align-items-center">
-            <img :src="LogoImg" alt="Logo" :style="{
-                width: width,
-                maxWidth: '100%',
-                objectFit: 'cover'
-            }">
-        </div>
+    <div class="d-flex flex-column align-items-center">
+        <img :src="LogoImg" alt="Logo" :style="{
+               width: width,
+               maxWidth: '100%',
+               objectFit: 'cover'
+           }">
     </div>
 </template>
 
 <script setup>
 import { defineProps } from 'vue';
-import LogoImg from '../../../assets/images/logo.png';
+import LogoImg from '../../../assets/images/logo-without-background.png';
 
 const props = defineProps({
     width: {

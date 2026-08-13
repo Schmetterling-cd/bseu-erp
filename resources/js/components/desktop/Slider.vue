@@ -1,22 +1,22 @@
 <template>
     <div class="h-100 bg-dark text-white d-flex flex-column justify-content-between"
         :class="{ 'collapsed': isCollapsed }">
-        <!-- <Logo width="350px" /> -->
+        <Logo width="350px" />
         <DistrictInfo v-if="!props.isCollapsed" />
-        <NavigationLayout>
+        <ScrollLayout>
             <Navigation />
-        </NavigationLayout>
+        </ScrollLayout>
         <SliderFooter v-if="!props.isCollapsed" />
     </div>
 </template>
 
 <script setup>
 import { defineProps } from 'vue';
-import Navigation from './Navigation.vue';
+import Navigation from './navigation/Navigation.vue';
 import Logo from './Logo.vue';
 import SliderFooter from './SliderFooter.vue';
 import DistrictInfo from './DistrictInfo.vue';
-import NavigationLayout from '../../layouts/desktop/NavigationLayout.vue';
+import ScrollLayout from '../../layouts/desktop/ScrollLayout.vue';
 
 const props = defineProps({
     isCollapsed: {

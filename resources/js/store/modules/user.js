@@ -4,12 +4,13 @@ export default {
     namespaced: true,
 
     state: {
-        isAuthenticated: true,
+        isAuthenticated: false,
         user: {
             id: 0,
-            name: 'Серебряная Лия Валентиновна',
+            fullName: 'Серебряная Лия Валентиновна',
             email: 'example@example.com',
-            role: 'tutor'
+            role: 'tutor',
+            department: 'economy_it'
         },
     },
 

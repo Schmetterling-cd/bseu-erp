@@ -1,0 +1,26 @@
+.system-scrollbar {
+    scrollbar-width: none !important;
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.1);
+
+    -ms-overflow-style: none;
+}
+
+.system-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.system-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    margin: 3px 0;
+}
+
+.system-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    transition: background 0.2s ease;
+}
+
+.system-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
