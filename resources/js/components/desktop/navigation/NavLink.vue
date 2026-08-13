@@ -1,8 +1,8 @@
 <template>
     <a
         class="nav-link-simple d-flex align-items-center px-3 py-3 text-white text-decoration-none"
-        :class="{ 'active': link.active }"
-        @click.prevent="$emit('click')"
+        :class="{ 'active': isActive }"
+        @click.prevent="setActive"
     >
         <i v-if="link.icon" :class="['bi', link.icon, 'me-3']"></i>
         <i v-else class="bi bi-list me-3"></i>
@@ -11,16 +11,26 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, computed } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
-defineProps({
-    link: {
+const props = defineProps({
+    element: {
         type: Object,
         required: true
-    },
+    }
 });
 
-defineEmits(['click']);
+const link = computed(() => props.element);
+const store = useStore();
+const isActive = computed(() => store.state.navigation.activeItemId === link.value.uuid);
+const router = useRouter();
+
+const setActive = () => {
+    store.commit('navigation/setActiveItem', link.value.uuid);
+    router.push(link.value.link);
+}
 </script>
 
 <style scoped>
@@ -34,7 +44,7 @@ defineEmits(['click']);
 }
 
 .nav-link-simple.active {
-    background-color: var(--main-bseu-color) !important;
+    background-color: var(--main-system-color) !important;
     font-weight: 600;
 }
 </style>

@@ -26,6 +26,6 @@ const props = defineProps({
 }
 
 .bseu-icon:hover :deep(i) {
-    color: var(--main-bseu-color) !important;
+    color: var(--main-system-color) !important;
 }
 </style>

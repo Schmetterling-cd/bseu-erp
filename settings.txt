@@ -1,0 +1,7 @@
+// Установка
+composer require dialect/transedit
+php artisan vendor:publish --provider="Dialect\TransEdit\TransEditServiceProvider"
+php artisan migrate
+
+// Импорт существующих файлов в БД
+php artisan transedit:add-lang-files-to-database
